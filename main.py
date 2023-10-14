@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 class Team:
     
     def __init__(self, percentageLastSeason):
@@ -21,7 +24,7 @@ class Team:
         self.drawCnt += 1
         self.score += 1
     
-    def clearScore(self):
+    def clear_score(self):
         self.score = 0
         self.victoryCnt = 0
         self.lossCnt = 0
@@ -29,9 +32,36 @@ class Team:
         
         
         
-def probability(rankA, rankB, epsilon):
-    victoryProbA = rankA / (rankA + rankB + (abs(rankA + rankB) / (3 * (abs(rankA + rankB) + epsilon))))
-    victoryProbB = rankB / (rankB + rankA + (abs(rankB + rankA) / (3 * (abs(rankB + rankA) + epsilon))))
-    drawProb = 1 - victoryProbA - victoryProbB
-    return victoryProbA, victoryProbB, drawProb
 
+
+class Simulation():
+    
+    def __init__(self, listOfTeams : list):
+        self.listOfTeams = listOfTeams
+        self.amountOfTeams = len(listOfTeams)
+        
+    def set_matrix_of_probability(self):
+        
+        self.probabilities = np.zeros(shape=(self.amountOfTeams,self.amountOfTeams), dtype = list)
+        
+        for row in range(self.amountOfTeams):
+            for col in range(self.amountOfTeams):
+                pA, pB, pD = self.calculate_probability(self.listOfTeams[row].rank, self.listOfTeams[col].rank)                
+                self.probabilities[row][col] = [pA, pB, pD]
+                
+        print(self.probabilities)
+
+    def calculate_probability(self, rankA, rankB, epsilon = 0.001):
+        sumRanks = rankA + rankB
+        victoryProbA = rankA / (sumRanks + (abs(sumRanks) / (3 * (abs(sumRanks) + epsilon))))
+        victoryProbB = rankB / (sumRanks + (abs(sumRanks) / (3 * (abs(sumRanks) + epsilon))))
+        drawProb = 1 - victoryProbA - victoryProbB
+        return victoryProbA, victoryProbB, drawProb
+
+
+team1 = Team(55)
+team2 = Team(89)
+team3 = Team(25)
+
+sim = Simulation([team1,team2,team3])
+sim.set_matrix_of_probability()

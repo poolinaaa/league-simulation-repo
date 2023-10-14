@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from random import random
 
 class Team:
@@ -29,7 +28,6 @@ class Team:
     def save_result(self, nrOfSimulation):
         self.historyScores[nrOfSimulation] = self.score
         
-    
     def clear_score(self):
         self.score = 0
         self.victoryCnt = 0
@@ -37,9 +35,6 @@ class Team:
         self.drawCnt = 0
         
         
-        
-
-
 class Simulation():
     
     def __init__(self, listOfTeams : list):
@@ -98,7 +93,6 @@ class Simulation():
         
 
 
-
 team1 = Team(14)
 team2 = Team(66)
 team3 = Team(25)
@@ -126,3 +120,7 @@ print(team6.historyScores)
 print(team7.historyScores)
 print(team8.historyScores)
 print(team9.historyScores)'''
+
+
+
+

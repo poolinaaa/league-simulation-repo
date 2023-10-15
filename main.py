@@ -12,7 +12,7 @@ class Team:
         self.historyScores = dict()
         
     def __str__(self) -> str:
-        return f'Current score of team {self.__name__} is {self.score}'
+        return f'Current score is {self.score}'
     
     def victory(self):
         self.victoryCnt += 1
@@ -94,6 +94,7 @@ class Simulation():
 
 
 team1 = Team(14)
+print(team1)
 team2 = Team(66)
 team3 = Team(25)
 team4 = Team(70)

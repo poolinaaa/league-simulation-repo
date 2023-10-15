@@ -1,4 +1,3 @@
-import numpy as np
 from random import random
 import math
 
@@ -58,21 +57,7 @@ class TeamList:
             self.tail.next = element
             self.tail = element
         
-        
-    def eliminate_team(self, team_to_eliminate):
-        if not self.head:
-            return 
-        
-        if self.head.team == team_to_eliminate:
-            self.head = self.head.next
-            return
-        
-        current = self.head
-        while current.next:
-            if current.next.team == team_to_eliminate:
-                current.next = current.next.next
-                return
-            current = current.next
+
         
             
     def __str__(self):
@@ -84,24 +69,7 @@ class TeamList:
             current = current.next
         return str(listOfNames)
 
-'''class List():
-    
-    def __init__(self):
-        self.head = None
-        self.tail = None
-        self.length = 0
-
-    def appendingElement(self,element:Element):
-        if self.head == None:
-            self.head = element
-            self.tail = element
-        else:
-            self.tail.next = element
-            self.tail = element
-        self.length += 1 '''                  
-
-
-
+               
 class Simulation():
     
     def __init__(self, listOfTeams : list):
@@ -135,11 +103,6 @@ class Simulation():
                 teamB.team.win_championship(simNr)
             return teamB
 
-
-
-
-
-
     
     def saveScores(self, nr):
         for team in range(self.amountOfTeams):
@@ -165,71 +128,6 @@ class Simulation():
 
         self.saveScores(nrOfSimulation)
 
-
-'''    def play(self, teamA, teamB, nrOfMatch, nrOfRounds, simNr):
-        probA, probB = self.calculate_probability(teamA.team.rank,teamB.team.rank)
-        matchResult = random()
-        
-        if matchResult < probA:
-            teamB.change_state()
-            print(teamB.state)
-            teamA.team.victory()
-            if nrOfMatch + 1 == nrOfRounds:
-                teamA.team.win_championship(simNr)
-            return teamA.team
-        else:
-            teamA.change_state()
-            print(teamA.state)
-            teamB.team.victory()
-            if nrOfMatch + 1 == nrOfRounds:
-                teamB.team.win_championship(simNr)
-            return teamB.team'''
-              
-''' def simulate(self, nrOfSimulation):
-    listSimulation = TeamList()
-    listSimulation.add_teams(self.listOfTeams)
-    cnt = int(self.amountOfTeams / 2)
-    current = listSimulation.head
-    
-    for match in range(int(self.numberOfMatches)):
-        
-        listNextRound = TeamList()  
-        for play in range(cnt):
-            teamA = current
-            teamB = current.next
-            winner = self.play(teamA, teamB, match, self.numberOfMatches, nrOfSimulation)
-            listNextRound.appendingElement(winner)
-            if current.next.next != None:
-                current = current.next.next
-            
-        listSimulation = listNextRound  
-        cnt = int(cnt / 2)
-
-    self.saveScores(nrOfSimulation)'''
-    
-'''def simulate(self, nrOfSimulation):
-    listSimulation = TeamList()
-    listSimulation.add_teams(self.listOfTeams)
-    listSimulation.playCnt = int(self.amountOfTeams / 2)
-    current = listSimulation.head
-    
-    for match in range(int(self.numberOfMatches)):
-        
-        listNextRound = TeamList()
-        if match != 0:
-            current = listNextRound.head
-        for play in range(int(listSimulation.playCnt)):
-            teamA = current
-            teamB = current.next
-            winner = self.play(teamA, teamB, match, self.numberOfMatches, nrOfSimulation)
-            listNextRound.appendingElement(winner)
-            if current.next.next != None:
-                current = current.next.next
-            
-        listSimulation.playCnt = int(listSimulation.playCnt / 2)
-
-
-    self.saveScores(nrOfSimulation)'''
     
 
 
@@ -245,7 +143,7 @@ team7 = Team(5,'ff')
 team8 = Team(55,'dgdrtg')
 simulation = Simulation([team1,team2,team3,team4,team5,team6,team7,team8])
 
-for sim in range(1):
+for sim in range(10):
     simulation.simulate(sim)
     
 print(team1.historyVictoryScores)

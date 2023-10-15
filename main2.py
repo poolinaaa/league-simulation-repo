@@ -56,9 +56,6 @@ class TeamList:
         else:
             self.tail.next = element
             self.tail = element
-        
-
-        
             
     def __str__(self):
         current = self.head
@@ -79,9 +76,7 @@ class Simulation():
 
     def calculate_probability(self, rankA, rankB):
         victoryProbA = rankA / (rankA + rankB)
-        print(victoryProbA)
         victoryProbB = 1 - victoryProbA
-        print(victoryProbB)
         return victoryProbA, victoryProbB
 
     def play(self, teamA, teamB, nrOfMatch, nrOfRounds, simNr):
@@ -90,21 +85,19 @@ class Simulation():
         
         if matchResult < probA:
             teamB.change_state()
-            print(teamB.state)
             teamA.team.victory()
             if nrOfMatch + 1 == nrOfRounds:
                 teamA.team.win_championship(simNr)
             return teamA
         else:
             teamA.change_state()
-            print(teamA.state)
             teamB.team.victory()
             if nrOfMatch + 1 == nrOfRounds:
                 teamB.team.win_championship(simNr)
             return teamB
 
     
-    def saveScores(self, nr):
+    def save_scores(self, nr):
         for team in range(self.amountOfTeams):
             self.listOfTeams[team].save_result(nr)
             self.listOfTeams[team].clear_score()
@@ -126,7 +119,7 @@ class Simulation():
 
             listSimulation = listNextRound
 
-        self.saveScores(nrOfSimulation)
+        self.save_scores(nrOfSimulation)
 
     
 

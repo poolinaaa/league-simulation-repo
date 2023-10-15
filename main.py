@@ -33,7 +33,9 @@ class Team:
         self.victoryCnt = 0
         self.lossCnt = 0
         self.drawCnt = 0
-        
+    
+    def calculate_average_score(self, simAmount):
+        self.averageScore = (sum([score for score in self.historyScores.values()]))/simAmount 
         
 class Simulation():
     
@@ -75,7 +77,7 @@ class Simulation():
             self.listOfTeams[teamA].draw()
             self.listOfTeams[teamB].draw() 
     
-    def saveScores(self, nr):
+    def save_scores(self, nr):
         for team in range(self.amountOfTeams):
             self.listOfTeams[team].save_result(nr)
             self.listOfTeams[team].clear_score()
@@ -88,13 +90,20 @@ class Simulation():
                     self.play(listProb[0],listProb[1], teamA=row, teamB=col)
                 else:
                     continue
-        self.saveScores(nrOfSimulation)
-                
+        self.save_scores(nrOfSimulation)
         
-
-
+    def check_stats(self, simAmount):
+        self.value25N1 = 2.5* (self.amountOfTeams - 1)
+        listAverageValues = []
+        for team in range(self.amountOfTeams):
+            self.listOfTeams[team].calculate_average_score(simAmount)
+            listAverageValues.append(self.listOfTeams[team].averageScore)
+        result = sum(listAverageValues)/self.amountOfTeams
+        print(result)
+        
+        
+                
 team1 = Team(14)
-print(team1)
 team2 = Team(66)
 team3 = Team(25)
 team4 = Team(70)
@@ -114,14 +123,7 @@ for sim in range(31):
     
 print(team1.historyScores)
 print(team2.historyScores)
-'''print(team3.historyScores)
-print(team4.historyScores)
-print(team5.historyScores)
-print(team6.historyScores)
-print(team7.historyScores)
-print(team8.historyScores)
-print(team9.historyScores)'''
 
-
+simulation.check_stats(31)
 
 

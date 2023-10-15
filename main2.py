@@ -1,5 +1,6 @@
 import numpy as np
 from random import random
+import math
 
 class Team:
     
@@ -28,7 +29,11 @@ class TeamNode:
     def __init__(self, team):
         self.next = None
         self.team = team
-        
+        self.state = 'winner'
+    
+    def change_state(self):
+        self.state = 'loser'
+       
 class TeamList:
     
     def __init__(self):
@@ -44,6 +49,8 @@ class TeamList:
         for team in range(1,len(self.listOfTeams)):
             self.tail.next = TeamNode(self.listOfTeams[team])
             self.tail = self.tail.next
+    
+    
             
     def __str__(self):
         current = self.head
@@ -61,40 +68,33 @@ team2 = Team(66,'tejfjt')
 team3 = Team(25,'ftjf')
 
 teams = [team1,team2,team3]
-listtt = TeamList()
-listtt.add_teams(teams)
-print(listtt) 
+
 
 class Simulation():
     
     def __init__(self, listOfTeams : list):
         self.listOfTeams = listOfTeams
         self.amountOfTeams = len(listOfTeams)
-          
+        self.numberOfMatches = math.log2(self.amountOfTeams)
 
-    def calculate_probability(self, rankA, rankB, epsilon = 0.001):
-        sumRanks = rankA + rankB
-        victoryProbA = rankA / (sumRanks + (abs(sumRanks) / (3 * (abs(sumRanks) + epsilon))))
+    def calculate_probability(self, rankA, rankB):
+        victoryProbA = rankA / (rankA + rankB)
         print(victoryProbA)
-        victoryProbB = rankB / (sumRanks + (abs(sumRanks) / (3 * (abs(sumRanks) + epsilon))))
+        victoryProbB = 1 - victoryProbA
         print(victoryProbB)
-        drawProb = 1 - victoryProbA - victoryProbB
-        return victoryProbA, victoryProbB, drawProb
+        return victoryProbA, victoryProbB
 
-    def play(self, probA, probB, teamA, teamB):
+    def play(self, teamA, teamB):
+        probA, probB = self.calculate_probability(teamA.team.rank,teamB.team.rank)
         matchResult = random()
-        sectionA = probA
-        sectionB = probB
         
-        if matchResult < sectionA:
-            self.listOfTeams[teamA].victory()
-            self.listOfTeams[teamB].loss()
-        elif matchResult >= sectionA and matchResult < sectionA + sectionB:
-            self.listOfTeams[teamA].loss()
-            self.listOfTeams[teamB].victory()
+        if matchResult < probA:
+            teamB.change_state()
+            teamA.team.victory()
         else:
-            self.listOfTeams[teamA].draw()
-            self.listOfTeams[teamB].draw() 
+            teamA.change_state()
+            teamB.team.victory()
+
     
     def saveScores(self, nr):
         for team in range(self.amountOfTeams):
@@ -102,11 +102,17 @@ class Simulation():
             self.listOfTeams[team].clear_score()
     
     def simulate(self, nrOfSimulation):
-        for row in range(self.amountOfTeams):
-            for col in range(self.amountOfTeams):
-                if row != col:
-                    listProb = self.probabilities[row][col]
-                    self.play(listProb[0],listProb[1], teamA=row, teamB=col)
-                else:
-                    continue
+        listSimulation = TeamList()
+        listSimulation.add_teams(self.listOfTeams)
+        listSimulation.teamCnt = self.amountOfTeams
+        
+        for match in range(int(self.numberOfMatches)):
+            current  = listSimulation.head
+
+            while current.next != None:
+                listOfNames.append(current.next.team.name)
+                current = current.next
+       
+            
+        
         self.saveScores(nrOfSimulation)

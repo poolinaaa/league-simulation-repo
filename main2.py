@@ -109,9 +109,22 @@ class Simulation():
         for match in range(int(self.numberOfMatches)):
             current  = listSimulation.head
 
-            while current.next != None:
-                listOfNames.append(current.next.team.name)
+            while current != None:
+                while current.state != 'winner':
+                    current = current.next
+                teamA = current
+                while current.next.state != 'winner':
+                    current = current.next
+                teamB = current.next
+                self.play(teamA,teamB)
+                
+                
+                
                 current = current.next
+                
+                
+                
+    
        
             
         

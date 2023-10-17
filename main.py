@@ -1,5 +1,6 @@
 import numpy as np
 from random import random
+from scipy import stats
 
 class Team:
     
@@ -91,16 +92,34 @@ class Simulation():
                 else:
                     continue
         self.save_scores(nrOfSimulation)
-        
-    def check_stats(self, simAmount):
-        self.value25N1 = 2.5* (self.amountOfTeams - 1)
-        listAverageValues = []
-        for team in range(self.amountOfTeams):
-            self.listOfTeams[team].calculate_average_score(simAmount)
-            listAverageValues.append(self.listOfTeams[team].averageScore)
-        result = sum(listAverageValues)/self.amountOfTeams
-        print(result)
-        
+
+    
+    def stats(self, simAmount, alpha=0.05):
+        self.meanScoreOfSimulations = []
+        for nrOfSim in range(simAmount):
+            sumScores = 0
+            for team in range(self.amountOfTeams):
+                sumScores += self.listOfTeams[team].historyScores[nrOfSim]
+            result = sumScores / self.amountOfTeams
+            self.meanScoreOfSimulations.append(result)
+        self.hypothesis_testing(simAmount,alpha)
+
+      
+    def hypothesis_testing(self, simAmount, alpha):
+        #h0 mean of sample is less than 2.5(N-1)
+        #h1 mean of sample is greater than 2.5(N-1)
+        meanValOfSim = sum(self.meanScoreOfSimulations)/simAmount
+        test25N1 = 2.5*(self.amountOfTeams-1)
+        t = (meanValOfSim - test25N1) / np.std(self.meanScoreOfSimulations, ddof=1)
+        p = 1 - stats.t.cdf(t, df = simAmount-1)
+
+        if p < alpha :
+            #h0 rejected
+            print(f'There is {100 - alpha*100}% confidence that mean of average score (which is {meanValOfSim}) is greater than 2.5(N-1) = {test25N1}')
+        else:
+            print(f"On confidence level {100 - alpha*100}% mean of average score (which is {meanValOfSim}) is less than {test25N1}.")
+
+
         
                 
 team1 = Team(14)
@@ -115,15 +134,12 @@ team9 = Team(2)
 
 
 
-simulation = Simulation([team1,team2])
+simulation = Simulation([team2,team8,team9,team1,team4,team5,team3,team6,team7])
 simulation.set_matrix_of_probability()
 
 for sim in range(31):
     simulation.simulate(sim)
     
-print(team1.historyScores)
-print(team2.historyScores)
-
-simulation.check_stats(31)
+simulation.stats(31)
 
 

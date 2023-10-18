@@ -125,34 +125,15 @@ class Simulation():
 
 
 team1 = Team(90,'tettf1')
-print(team1)
 team2 = Team(66,'tejfjt')
 team3 = Team(25,'ftjf')
 team4 = Team(50,'dgdrtgggg')
 team5 = Team(95,'tetf1')
-print(team1)
 team6 = Team(64,'tejt')
 team7 = Team(5,'ff')
 team8 = Team(55,'dgdrtg')
 simulation = Simulation([team1,team2,team3,team4,team5,team6,team7,team8])
 
-for sim in range(10):
+for sim in range(100):
     simulation.simulate(sim)
     
-print(team1.historyVictoryScores)
-print(team2.historyVictoryScores)
-print(team3.historyVictoryScores)
-print(team4.historyVictoryScores)
-print(team5.historyVictoryScores)
-print(team6.historyVictoryScores)
-print(team7.historyVictoryScores)
-print(team8.historyVictoryScores)
-
-print(team1.historyChampionshipWinner)
-print(team2.historyChampionshipWinner)
-print(team3.historyChampionshipWinner)
-print(team4.historyChampionshipWinner)
-print(team5.historyChampionshipWinner)
-print(team6.historyChampionshipWinner)
-print(team7.historyChampionshipWinner)
-print(team8.historyChampionshipWinner)

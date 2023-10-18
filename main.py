@@ -110,17 +110,16 @@ class Simulation():
         #h1 mean of sample is greater than 2.5(N-1)
         meanValOfSim = sum(self.meanScoreOfSimulations)/simAmount
         test25N1 = 2.5*(self.amountOfTeams-1)
-        t = (meanValOfSim - test25N1) / np.std(self.meanScoreOfSimulations, ddof=1)
-        p = 1 - stats.t.cdf(t, df = simAmount-1)
 
-        if p < alpha :
-            #h0 rejected
+        t1, p1 = stats.ttest_1samp(self.meanScoreOfSimulations, test25N1, alternative='less')
+
+        if p1 > alpha :
+            #h0 mean of sample is greater than 2.5(N-1)
             print(f'There is {100 - alpha*100}% confidence that mean of average score (which is {meanValOfSim}) is greater than 2.5(N-1) = {test25N1}')
         else:
+            #h0 mean of sample is less than 2.5(N-1)
+            #h0 rejected
             print(f"On confidence level {100 - alpha*100}% mean of average score (which is {meanValOfSim}) is less than {test25N1}.")
-
-
-        
                 
 team1 = Team(14)
 team2 = Team(66)

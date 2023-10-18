@@ -1,5 +1,6 @@
 from random import random
 import math
+from scipy import stats
 
 class Team:
     
@@ -9,7 +10,7 @@ class Team:
         self.historyChampionshipWinner = dict()
         self.victoryCnt = 0
         self.name = name
-    
+         
     def victory(self):
         self.victoryCnt += 1
         
@@ -21,7 +22,6 @@ class Team:
     
     def clear_score(self):
         self.victoryCnt = 0
-
 
 class TeamNode:
     
@@ -65,8 +65,7 @@ class TeamList:
             listOfNames.append(current.next.team.name)
             current = current.next
         return str(listOfNames)
-
-               
+    
 class Simulation():
     
     def __init__(self, listOfTeams : list):
@@ -120,8 +119,23 @@ class Simulation():
             listSimulation = listNextRound
 
         self.save_scores(nrOfSimulation)
-
-    
+        
+    def stats(self):
+        listOfRanks = [team.rank for team in self.listOfTeams]
+        listAmountOfWonChampionships = [len(team.historyChampionshipWinner) for team in self.listOfTeams]
+        r,p = stats.pearsonr(listOfRanks, listAmountOfWonChampionships)
+        if r > 0 and r < 0.3:
+            print('There is not relationship between (or there is really weak relationship) rank and amount of won matches')
+            print(f"The correlation coefficient (Pearson's r : {r})")
+        elif r >= 0.3 and r < 0.5:
+            print('There is moderate relationship between rank and amount of won matches')
+            print(f"The correlation coefficient (Pearson's r : {r})")
+        elif r >= 0.5 and r < 0.7:
+            print('There is strong relationship between rank and amount of won matches')
+            print(f"The correlation coefficient (Pearson's r : {r})")
+        elif r >= 0.7:
+            print('There is really strong relationship between rank and amount of won matches')
+            print(f"The correlation coefficient (Pearson's r : {r})")
 
 
 team1 = Team(90,'tettf1')
@@ -136,4 +150,6 @@ simulation = Simulation([team1,team2,team3,team4,team5,team6,team7,team8])
 
 for sim in range(100):
     simulation.simulate(sim)
-    
+
+simulation.stats()
+

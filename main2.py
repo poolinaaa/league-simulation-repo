@@ -158,4 +158,5 @@ for sim in range(100):
     simulation.simulate(sim)
 
 simulation.stats()
+print()
 print(simulation)

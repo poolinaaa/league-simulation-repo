@@ -4,16 +4,17 @@ from scipy import stats
 
 class Team:
     
-    def __init__(self, percentageLastSeason):
+    def __init__(self, percentageLastSeason, name):
         self.score = 0
         self.victoryCnt = 0
         self.lossCnt = 0
         self.drawCnt = 0
         self.rank = percentageLastSeason/100
         self.historyScores = dict()
+        self.name = name
         
     def __str__(self) -> str:
-        return f'Current score is {self.score}'
+        return f'Current score of {self.name} is {self.score}'
     
     def victory(self):
         self.victoryCnt += 1
@@ -38,6 +39,9 @@ class Team:
     def calculate_average_score(self, simAmount):
         self.averageScore = (sum([score for score in self.historyScores.values()]))/simAmount 
         
+    def check_score_of_exact_simulation(self, nrSim):
+        print(f'Simulation nr {nrSim}, score of {self.name} is {self.historyScores[nrSim]}')
+        
 class Simulation():
     
     def __init__(self, listOfTeams : list):
@@ -51,15 +55,12 @@ class Simulation():
         for row in range(self.amountOfTeams):
             for col in range(self.amountOfTeams):
                 pA, pB, pD = self.calculate_probability(self.listOfTeams[row].rank, self.listOfTeams[col].rank)                
-                self.probabilities[row][col] = [pA, pB, pD]
-        print(self.probabilities)   
+                self.probabilities[row][col] = [pA, pB, pD] 
 
-    def calculate_probability(self, rankA, rankB, epsilon = 0.001):
+    def calculate_probability(self, rankA, rankB, epsilon = 0.01):
         sumRanks = rankA + rankB
         victoryProbA = rankA / (sumRanks + (abs(sumRanks) / (3 * (abs(sumRanks) + epsilon))))
-        print(victoryProbA)
         victoryProbB = rankB / (sumRanks + (abs(sumRanks) / (3 * (abs(sumRanks) + epsilon))))
-        print(victoryProbB)
         drawProb = 1 - victoryProbA - victoryProbB
         return victoryProbA, victoryProbB, drawProb
 
@@ -93,8 +94,8 @@ class Simulation():
                     continue
         self.save_scores(nrOfSimulation)
 
-    
     def stats(self, simAmount, alpha=0.05):
+        self.simAmount = simAmount
         self.meanScoreOfSimulations = []
         for nrOfSim in range(simAmount):
             sumScores = 0
@@ -120,25 +121,32 @@ class Simulation():
             #h0 mean of sample is less than 2.5(N-1)
             #h0 rejected
             print(f"On confidence level {100 - alpha*100}% mean of average score (which is {meanValOfSim}) is less than {test25N1}.")
-                
-team1 = Team(14)
-team2 = Team(66)
-team3 = Team(25)
-team4 = Team(70)
-team5 = Team(89)
-team6 = Team(20)
-team7 = Team(5)
-team8 = Team(78)
-team9 = Team(2)
+    
+    def __str__(self):
+        averageScoresOfTeams = []
+        for team in range(self.amountOfTeams):
+            self.listOfTeams[team].calculate_average_score(self.simAmount)
+            averageScoresOfTeams.append(f'Average score of {self.listOfTeams[team].name} is {self.listOfTeams[team].averageScore}')
+        return '\n'.join(averageScoresOfTeams)
+    
+team1 = Team(69,'Boston Celtics')
+team2 = Team(48,'Chicago Bulls')
+team3 = Team(52,'Los Angeles Lakers')
+team4 = Team(26,'San Antonio Spurs')
+team5 = Team(41,'Orlando Magic')
+team6 = Team(16,'Detroit Pistons')
+team7 = Team(70,'Milwaukee Bucks')
+team8 = Team(64,'Denver Nuggets')
 
 
 
-simulation = Simulation([team2,team8,team9,team1,team4,team5,team3,team6,team7])
+simulation = Simulation([team1,team2,team3,team4,team5,team6,team7,team8])
 simulation.set_matrix_of_probability()
 
 for sim in range(31):
     simulation.simulate(sim)
     
 simulation.stats(31)
-
+print()
+print(simulation)
 

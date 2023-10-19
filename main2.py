@@ -136,20 +136,26 @@ class Simulation():
         elif r >= 0.7:
             print('There is really strong relationship between rank and amount of won matches')
             print(f"The correlation coefficient (Pearson's r : {r})")
+        
+    def __str__(self):
+        resultWinners = []
+        for team in range(self.amountOfTeams):
+            resultWinners.append(f'The number of wins by the {self.listOfTeams[team].name} is {len(self.listOfTeams[team].historyChampionshipWinner)}')
+        return '\n'.join(resultWinners)
 
 
-team1 = Team(90,'tettf1')
-team2 = Team(66,'tejfjt')
-team3 = Team(25,'ftjf')
-team4 = Team(50,'dgdrtgggg')
-team5 = Team(95,'tetf1')
-team6 = Team(64,'tejt')
-team7 = Team(5,'ff')
-team8 = Team(55,'dgdrtg')
+team1 = Team(69,'Boston Celtics')
+team2 = Team(48,'Chicago Bulls')
+team3 = Team(52,'Los Angeles Lakers')
+team4 = Team(26,'San Antonio Spurs')
+team5 = Team(41,'Orlando Magic')
+team6 = Team(16,'Detroit Pistons')
+team7 = Team(70,'Milwaukee Bucks')
+team8 = Team(64,'Denver Nuggets')
 simulation = Simulation([team1,team2,team3,team4,team5,team6,team7,team8])
 
 for sim in range(100):
     simulation.simulate(sim)
 
 simulation.stats()
-
+print(simulation)

@@ -49,9 +49,9 @@ Tournament rules:
 
 ## Usage:
 
-  Initialization: Teams are created with their respective last season rankings.
-  Simulation: Simulate tournament outcomes across multiple rounds and track championship victories.
-  Statistics: Analyze the correlation between team rankings and championship wins.
+  a) Initialization: Teams are created with their respective last season rankings.
+  b) Simulation: Simulate tournament outcomes across multiple rounds and track championship victories.
+  c) Statistics: Analyze the correlation between team rankings and championship wins.
 
 
 

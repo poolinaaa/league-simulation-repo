@@ -47,12 +47,12 @@ Tournament rules:
     Winners of each match move on to the next round.
     Losers are eliminated from the tournament.
 
-## Usage:
+## Usage
+Initialization: Teams are created with their respective last season rankings.
 
-  a) Initialization: Teams are created with their respective last season rankings.
-  b) Simulation: Simulate tournament outcomes across multiple rounds and track championship victories.
-  c) Statistics: Analyze the correlation between team rankings and championship wins.
+Simulation: Simulate tournament outcomes across multiple rounds and track championship victories.
 
+Statistics: Analyze the correlation between team rankings and championship wins.
 
 
 
